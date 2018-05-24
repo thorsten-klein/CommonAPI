@@ -5,13 +5,13 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread -std=c++0x")
 message(STATUS "SM_VM: ${SM_VM}")
 
 # create CommonAPI
-EXECUTE_PROCESS(	COMMAND make
-			WORKING_DIRECTORY ../tools/CommonAPI
-)
+#EXECUTE_PROCESS(	COMMAND make
+#			WORKING_DIRECTORY ../tools/CommonAPI
+#)
 
 # Call CommonAPI generator
-EXECUTE_PROCESS(	COMMAND make
-			WORKING_DIRECTORY src-gen
+EXECUTE_PROCESS(COMMAND make all
+		WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/src-gen
 )
 
 
@@ -31,8 +31,6 @@ link_directories(
 
 add_executable(HelloWorldClient
 	src/HelloWorldClient.cpp
-	src-gen/v1/commonapi/HelloWorldDBusProxy.cpp
-	src-gen/v1/commonapi/HelloWorldDBusDeployment
 )
 
 target_link_libraries(HelloWorldClient CommonAPI CommonAPI-DBus dbus-1)
@@ -40,9 +38,6 @@ target_link_libraries(HelloWorldClient CommonAPI CommonAPI-DBus dbus-1)
 add_executable(HelloWorldService
 	src/HelloWorldService.cpp
 	src/HelloWorldStubImpl.cpp
-	src-gen/v1/commonapi/HelloWorldDBusStubAdapter.cpp
-	src-gen/v1/commonapi/HelloWorldStubDefault
-	src-gen/v1/commonapi/HelloWorldDBusDeployment
 )
 
 target_link_libraries(HelloWorldService CommonAPI CommonAPI-DBus dbus-1)

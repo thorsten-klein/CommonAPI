@@ -5,9 +5,9 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread -std=c++0x")
 message(STATUS "SM_VM: ${SM_VM}")
 
 # create CommonAPI
-#EXECUTE_PROCESS(	COMMAND make
-#			WORKING_DIRECTORY ../tools/CommonAPI
-#)
+EXECUTE_PROCESS(	COMMAND make
+			WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/../tools/CommonAPI
+)
 
 # Call CommonAPI generator
 EXECUTE_PROCESS(COMMAND make all

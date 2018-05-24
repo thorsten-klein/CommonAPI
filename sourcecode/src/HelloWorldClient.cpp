@@ -7,14 +7,18 @@
 
 using namespace v1_0::commonapi;
 
-int main() {
-    std::shared_ptr < CommonAPI::Runtime > runtime = CommonAPI::Runtime::get();
+int main()
+{
+	std::shared_ptr < CommonAPI::Runtime > runtime = CommonAPI::Runtime::get();
     std::shared_ptr<HelloWorldProxy<>> myProxy =
-    	runtime->buildProxy<HelloWorldProxy>("local", "test");
+
+    runtime->buildProxy<HelloWorldProxy>("local", "test");
     std::cout << "buildProxy returned: " << myProxy << std::endl;
     std::cout << "Checking availability!" << std::endl;
     while (!myProxy->isAvailable())
-        usleep(10);
+    {
+    	usleep(10);
+    }
     std::cout << "Available..." << std::endl;
 
     CommonAPI::CallStatus callStatus;

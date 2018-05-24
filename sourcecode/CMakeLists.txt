@@ -36,7 +36,7 @@ file(GLOB_RECURSE 	SOURCE_FILES_SRCGEN_INTERFACE	src-gen/interfaces/*.cpp
 							src-gen/interfaces/*.c
 )
 
-
+add_definitions(-fPIC)
 
 message("Variant: OBJECT library ...")
 
@@ -63,19 +63,20 @@ message("Variant: STATIC library ...")
 
 	add_library(HelloWorld_StaticLibrary				STATIC	${SOURCE_FILES_SRCGEN_INTERFACE}
 	)
+	target_link_libraries(HelloWorld_StaticLibrary 			CommonAPI CommonAPI-DBus dbus-1 -fPIC)
 
 	#Client
 	add_executable(HelloWorld_StaticLibrary_Client			src/HelloWorldClient.cpp
 	)
 
-	target_link_libraries(HelloWorld_StaticLibrary_Client 		HelloWorld_StaticLibrary CommonAPI CommonAPI-DBus dbus-1)
+	target_link_libraries(HelloWorld_StaticLibrary_Client 		-Wl,--no-as-needed HelloWorld_StaticLibrary CommonAPI-DBus dbus-1)
 
 	#Service
 	add_executable(HelloWorld_StaticLibrary_Service 		src/HelloWorldService.cpp
 									src/HelloWorldStubImpl.cpp
 	)
 
-	target_link_libraries(HelloWorld_StaticLibrary_Service 		HelloWorld_StaticLibrary CommonAPI CommonAPI-DBus dbus-1)
+	target_link_libraries(HelloWorld_StaticLibrary_Service 		-Wl,--no-as-needed HelloWorld_StaticLibrary CommonAPI-DBus dbus-1)
 
 
 
@@ -83,16 +84,17 @@ message("Variant: SHARED library ...")
 
 	add_library(HelloWorld_SharedLibrary				SHARED	${SOURCE_FILES_SRCGEN_INTERFACE}
 	)
+	target_link_libraries(HelloWorld_SharedLibrary 			CommonAPI CommonAPI-DBus dbus-1 -fPIC)
 
 	#Client
 	add_executable(HelloWorld_SharedLibrary_Client			src/HelloWorldClient.cpp
 	)
 
-	target_link_libraries(HelloWorld_SharedLibrary_Client 		HelloWorld_SharedLibrary CommonAPI CommonAPI-DBus dbus-1)
+	target_link_libraries(HelloWorld_SharedLibrary_Client 		-Wl,--no-as-needed HelloWorld_SharedLibrary)
 
 	#Service
 	add_executable(HelloWorld_SharedLibrary_Service 		src/HelloWorldService.cpp
 									src/HelloWorldStubImpl.cpp
 	)
 
-	target_link_libraries(HelloWorld_SharedLibrary_Service 		HelloWorld_SharedLibrary CommonAPI CommonAPI-DBus dbus-1)
+	target_link_libraries(HelloWorld_SharedLibrary_Service 		HelloWorld_SharedLibrary)

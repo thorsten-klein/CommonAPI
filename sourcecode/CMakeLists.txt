@@ -48,7 +48,7 @@ message("Variant: OBJECT library ...")
 									$<TARGET_OBJECTS:HelloWorld_ObjectLibrary>
 	)
 
-	target_link_libraries(HelloWorld_ObjectLibrary_Client 		CommonAPI CommonAPI-DBus dbus-1)
+	target_link_libraries(HelloWorld_ObjectLibrary_Client 		CommonAPI CommonAPI-DBus)
 
 	#Service
 	add_executable(HelloWorld_ObjectLibrary_Service 		src/HelloWorldService.cpp
@@ -56,27 +56,28 @@ message("Variant: OBJECT library ...")
 									$<TARGET_OBJECTS:HelloWorld_ObjectLibrary>
 	)
 
-	target_link_libraries(HelloWorld_ObjectLibrary_Service 		CommonAPI CommonAPI-DBus dbus-1)
+	target_link_libraries(HelloWorld_ObjectLibrary_Service 		CommonAPI CommonAPI-DBus)
 
 
 message("Variant: STATIC library ...")
 
 	add_library(HelloWorld_StaticLibrary				STATIC	${SOURCE_FILES_SRCGEN_INTERFACE}
 	)
-	target_link_libraries(HelloWorld_StaticLibrary 			CommonAPI CommonAPI-DBus dbus-1 -fPIC)
+	target_compile_options(HelloWorld_StaticLibrary			PUBLIC -fPIC)
+	target_link_libraries(HelloWorld_StaticLibrary 			-Wl,--no-as-needed CommonAPI CommonAPI-DBus dbus-1) #  dbus-1 not necessary here, but recommended!
 
 	#Client
 	add_executable(HelloWorld_StaticLibrary_Client			src/HelloWorldClient.cpp
 	)
 
-	target_link_libraries(HelloWorld_StaticLibrary_Client 		-Wl,--no-as-needed HelloWorld_StaticLibrary CommonAPI-DBus dbus-1)
+	target_link_libraries(HelloWorld_StaticLibrary_Client 		CommonAPI)
 
 	#Service
 	add_executable(HelloWorld_StaticLibrary_Service 		src/HelloWorldService.cpp
 									src/HelloWorldStubImpl.cpp
 	)
 
-	target_link_libraries(HelloWorld_StaticLibrary_Service 		-Wl,--no-as-needed HelloWorld_StaticLibrary CommonAPI-DBus dbus-1)
+	target_link_libraries(HelloWorld_StaticLibrary_Service 		HelloWorld_StaticLibrary)
 
 
 
@@ -84,7 +85,7 @@ message("Variant: SHARED library ...")
 
 	add_library(HelloWorld_SharedLibrary				SHARED	${SOURCE_FILES_SRCGEN_INTERFACE}
 	)
-	target_link_libraries(HelloWorld_SharedLibrary 			CommonAPI CommonAPI-DBus dbus-1 -fPIC)
+	target_link_libraries(HelloWorld_SharedLibrary 			CommonAPI CommonAPI-DBus  dbus-1) #  dbus-1 not necessary here, but recommended!
 
 	#Client
 	add_executable(HelloWorld_SharedLibrary_Client			src/HelloWorldClient.cpp
@@ -97,4 +98,4 @@ message("Variant: SHARED library ...")
 									src/HelloWorldStubImpl.cpp
 	)
 
-	target_link_libraries(HelloWorld_SharedLibrary_Service 		HelloWorld_SharedLibrary)
+	target_link_libraries(HelloWorld_SharedLibrary_Service 		-Wl,--no-as-needed HelloWorld_SharedLibrary) # -Wl,--no-as-needed  not necessary here, but recommended!!!
